@@ -8,6 +8,6 @@
 命令提示符里输 pip install beautifulsoup4
 
 # usage
-在douban.py中修改自己的登陆邮箱和密码，然后运行get_rlist.py
+在douban.py中修改自己的登陆邮箱和密码和发送豆邮的内容，然后运行get_rlist.py
 
 默认设定刷新间隔是5秒
