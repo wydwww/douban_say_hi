@@ -16,6 +16,7 @@ req = urllib2.Request('http://www.douban.com/contacts/rlist')
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(wydwww.cookie))
 content = opener.open(req)
 
+#获得关注者列表第一页
 old = []
 soup = bs4.BeautifulSoup(content,'lxml')
 div = soup.find('ul','user-list')
@@ -30,7 +31,7 @@ while 1:
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(wydwww.cookie))
     content = opener.open(req)
 
-    followers_list=[]
+    followers_list = []
     soup = bs4.BeautifulSoup(content,"lxml")
     div = soup.find('ul','user-list')
     followers_list1 = re.findall('u\d{8}',str(div))
@@ -40,6 +41,7 @@ while 1:
         followers_list.append(a)
     print followers_list
 
+#对比得到新增关注者
     aa = set(old)
     bb = set(followers_list)
     print list(bb.difference(aa))
