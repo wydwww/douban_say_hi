@@ -3,7 +3,7 @@
 
 发豆邮的模块来自非官方豆瓣API :https://github.com/vi5i0n/doubanrobot
 
-基于Python 2.7.11，需安装beautifulsoup,lxml
+基于Python 2.7.11，需安装beautifulsoup, lxml
 
 命令提示符里输 pip install beautifulsoup4
 lxml 安装方法请搜索
