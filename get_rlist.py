@@ -112,11 +112,11 @@ class douban_robot:
             return False
         return True
 
-    def send_mail(self, id, content='Hey,girl !'):
+    def send_mail(self, id, content='test'):
 
         post_data = urllib.urlencode({
             "ck": self.ck,
-            "m_submit": "好了，寄出去",
+            "m_submit": "test",
             "m_text": content,
             "to": id,
         })
@@ -154,13 +154,19 @@ while 1:
     for a in followers_list2:
         a = a.strip('u')
         followers_list.append(a)
-    print followers_list
+    # print followers_list
 
     aa = set(old)
     bb = set(followers_list)
     print list(bb.difference(aa))
     for dif in list(bb.difference(aa)):
-        wydwww.send_mail(dif)
+        if len(dif) != 0:
+            wydwww.send_mail(dif)
+            # log
+            localtime = time.asctime(time.localtime(time.time()))
+            logfile = open('log.txt', 'w')
+            print >> logfile, 'date: %s   %s' % (localtime, dif)
+            logfile.close()
     old = followers_list
 
     time.sleep(5)
