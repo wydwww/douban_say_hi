@@ -10,8 +10,8 @@ import time
 import string
 import cookielib
 
-email = 'wydwww@outlook.com'
-password = 'wydwyd0808'
+email = 'xxx@outlook.com'
+password = 'xxx'
 cookies_file = 'Cookies_saved.txt'
 
 class douban_robot:
