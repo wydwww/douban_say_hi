@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
+
 __author__ = 'wydwww'
 
-import urllib
 import urllib2  # functions and classes which help in opening URLs
+import urllib
 import bs4      # extract data from HTML or XML files
 import re
 import time
 import string
 import cookielib
+import logging
 
-email = 'xxx@outlook.com'
+email = 'xxx@xxx.com'
 password = 'xxx'
 cookies_file = 'Cookies_saved.txt'
 
@@ -91,18 +93,16 @@ class douban_robot:
             captcha = re.search(
                 '<input type="hidden" name="captcha-id" value="(.+?)"/>', html)
             if captcha:
-                vcode = raw_input('图片上的验证码是：')
+                vcode = raw_input('CAPTCHA')
                 self.data["captcha-solution"] = vcode
                 self.data["captcha-id"] = captcha.group(1)
-                self.data["user_login"] = "登录"
-                # 验证码验证
+                self.data["user_login"] = "login"
                 response = opener.open(
                     self.login_url, urllib.urlencode(self.data))
                 # fp = open("2.html","wb")
                 # fp.write(response.read())
                 # fp.close
 
-        # 登录成功
         cookieJar.save()
         if response.geturl() == "http://www.douban.com/":
             print 'login success !'
@@ -112,11 +112,11 @@ class douban_robot:
             return False
         return True
 
-    def send_mail(self, id, content='test'):
+    def send_mail(self, id, content='嘎'):
 
         post_data = urllib.urlencode({
             "ck": self.ck,
-            "m_submit": "test",
+            "m_submit": "嘎",
             "m_text": content,
             "to": id,
         })
@@ -127,7 +127,6 @@ class douban_robot:
 
 wydwww = douban_robot()
 
-# old = ['57964615', '84415415', '97869782', '38533127', '48257548', '54708785', '22222222']
 req = urllib2.Request('http://www.douban.com/contacts/rlist')
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(wydwww.cookie))
 content = opener.open(req)
@@ -140,6 +139,25 @@ followers_list2 = list(set(followers_list1))
 for a in followers_list2:
     a = a.strip('u')
     old.append(a)
+
+# Logging config
+fmt = '%(asctime)s [%(levelname)s] %(message)s'
+datefmt = '%Y-%m-%d,%H:%M:%S'
+
+logging.basicConfig(
+    level=logging.INFO,
+    format=fmt,
+    datefmt=datefmt,
+    filename='douban.log',
+    filemode='a')
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter(fmt, datefmt)
+console.setFormatter(formatter)
+logging.getLogger('').addHandler(console)
+
+logging.getLogger('requests').setLevel(logging.CRITICAL)
 
 while 1:
     req = urllib2.Request('http://www.douban.com/contacts/rlist')
@@ -155,20 +173,15 @@ while 1:
         a = a.strip('u')
         followers_list.append(a)
     # print followers_list
+    # logging.info('Send Msg To %s' % followers_list)
 
     aa = set(old)
     bb = set(followers_list)
-    print list(bb.difference(aa))
+
     for dif in list(bb.difference(aa)):
-        if len(dif) != 0:
-            wydwww.send_mail(dif)
-            # log
-            localtime = time.asctime(time.localtime(time.time()))
-            logfile = open('log.txt', 'w')
-            print >> logfile, 'date: %s   %s' % (localtime, dif)
-            logfile.close()
+        wydwww.send_mail(dif)
+        logging.info('Send Msg To %s' % dif)
+
     old = followers_list
 
-    time.sleep(5)
-
-
+    time.sleep(2)
