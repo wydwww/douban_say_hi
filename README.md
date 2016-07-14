@@ -1,5 +1,5 @@
-# douban_send_mail_to_followers
-给豆瓣的新关注者发一条豆邮
+# douban_say_hi
+给新关注你的友邻发一封豆邮
 
 发豆邮的模块来自非官方豆瓣API :https://github.com/vi5i0n/doubanrobot
 
