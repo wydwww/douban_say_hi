@@ -12,8 +12,8 @@ import string
 import cookielib
 import logging
 
-email = 'xxx@xxx.com'
-password = 'xxx'
+email = raw_input('Email:')
+password = raw_input('Password:')
 cookies_file = 'Cookies_saved.txt'
 
 
