@@ -112,7 +112,7 @@ class douban_robot:
             return False
         return True
 
-    def send_mail(self, id, content='Hi！This message is sent from [https://github.com/wydwww/douban_say_hi]. Enjoy!'):
+    def send_mail(self, id, content = 'Hi！This message is sent from [https://github.com/wydwww/douban_say_hi]. Enjoy!'):
 
         post_data = urllib.urlencode({
             "ck": self.ck,
