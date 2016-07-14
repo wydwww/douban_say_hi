@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-#-*-coding:utf-8-*-
+# -*-coding:utf-8-*-
 
 __author__ = 'wydwww'
 
 import urllib2  # functions and classes which help in opening URLs
 import urllib
-import bs4      # extract data from HTML or XML files
+import bs4  # extract data from HTML or XML files
 import re
 import time
 import string
@@ -16,8 +16,8 @@ email = 'xxx@xxx.com'
 password = 'xxx'
 cookies_file = 'Cookies_saved.txt'
 
-class douban_robot:
 
+class douban_robot:
     def __init__(self):
         self.email = email
         self.password = password
@@ -75,7 +75,7 @@ class douban_robot:
         # will create (and save to) new cookie file
 
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookieJar))
-        #!!! following urllib2 will auto handle cookies
+        # !!! following urllib2 will auto handle cookies
         response = opener.open(self.login_url, urllib.urlencode(self.data))
         html = response.read()
         regex = r'<img id="captcha_image" src="(.+?)" alt="captcha"'
@@ -125,6 +125,7 @@ class douban_robot:
         request.add_header("Referer", "https://www.douban.com/doumail/write")
         self.opener.open(request, post_data)
 
+
 wydwww = douban_robot()
 
 req = urllib2.Request('http://www.douban.com/contacts/rlist')
@@ -132,9 +133,9 @@ opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(wydwww.cookie))
 content = opener.open(req)
 
 old = []
-soup = bs4.BeautifulSoup(content,'lxml')
-div = soup.find('ul','user-list')
-followers_list1 = re.findall('u\d{8}',str(div))
+soup = bs4.BeautifulSoup(content, 'lxml')
+div = soup.find('ul', 'user-list')
+followers_list1 = re.findall('u\d{8}', str(div))
 followers_list2 = list(set(followers_list1))
 for a in followers_list2:
     a = a.strip('u')
@@ -164,24 +165,25 @@ while 1:
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(wydwww.cookie))
     content = opener.open(req)
 
-    followers_list=[]
-    soup = bs4.BeautifulSoup(content,"lxml")
-    div = soup.find('ul','user-list')
-    followers_list1 = re.findall('u\d{8}',str(div))
+    followers_list = []
+    soup = bs4.BeautifulSoup(content, "lxml")
+    div = soup.find('ul', 'user-list')
+    followers_list1 = re.findall('u\d{8}', str(div))
     followers_list2 = list(set(followers_list1))
     for a in followers_list2:
         a = a.strip('u')
         followers_list.append(a)
     # print followers_list
-    # logging.info('Send Msg To %s' % followers_list)
+    # logging.info('Followers in page 1: %s' % followers_list)
 
     aa = set(old)
     bb = set(followers_list)
-
-    for dif in list(bb.difference(aa)):
+    difference = list(bb.difference(aa))
+    # print difference
+    for dif in difference:
         wydwww.send_mail(dif)
         logging.info('Send Msg To %s' % dif)
 
     old = followers_list
 
-    time.sleep(2)
+    time.sleep(10)
